@@ -34,6 +34,21 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $prenom;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Gestionnaire::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $gestionnaire;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -113,5 +128,46 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getGestionnaire(): ?Gestionnaire
+    {
+        return $this->gestionnaire;
+    }
+
+    public function setGestionnaire(Gestionnaire $gestionnaire): self
+    {
+        // set the owning side of the relation if necessary
+        if ($gestionnaire->getUser() !== $this) {
+            $gestionnaire->setUser($this);
+        }
+
+        $this->gestionnaire = $gestionnaire;
+
+        return $this;
     }
 }
