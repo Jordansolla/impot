@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\form\UserType;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,8 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     #[Route('/admin', name: 'admin')]
-    public function index(Request $request): Response
+    public function index(Request $request, UserRepository $userRepo): Response
     {
+        $users = $userRepo->findAll();
         $user = new User();
 
         $form = $this->createForm(UserType::class, $user);
@@ -29,7 +31,7 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/index.html.twig', [
-//            'controller_name' => 'AdminController',
+            'users' => $users,
             'form' => $form->createView()
         ]);
     }
