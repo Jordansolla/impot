@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class UserContriType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -20,13 +20,13 @@ class UserType extends AbstractType
                     'choices' =>
                         array
                         (
-                            'Gestionnaire' => 'ROLE_GEST',
-                            'Admin' => 'ROLE_ADMIN',
+                            'Contribuable' => 'ROLE_CONTRI',
                         ),
                     'multiple' => true,
                     'required' => true,
                 )
             )
+
             ->add('password')
             ->add('nom')
             ->add('prenom')

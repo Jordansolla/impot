@@ -12,12 +12,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 #[Route('/admin', name: 'admin.')]
 class AdminController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(Request $request, UserRepository $userRepo, GestionnaireRepository $gestionnaireRepo): Response
+    public function index(Request $request, UserRepository $userRepo, GestionnaireRepository $gestionnaireRepo, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $users = $userRepo->findAll();
         $gestionnaires = $gestionnaireRepo->findAll();
@@ -36,6 +37,12 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
                 $entityManager = $this->getDoctrine()->getManager();
 
                 $entityManager->persist($user);
@@ -56,7 +63,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/gestionnaire/{user}/{gestionnaire}/edit', name: 'gestionnaire.edit')]
-    public function edit(Request $request, User $user, Gestionnaire $gestionnaire): Response
+    public function edit(Request $request, User $user, Gestionnaire $gestionnaire,UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $formGest = $this->createForm(GestionnaireType::class, $gestionnaire);
@@ -65,6 +72,12 @@ class AdminController extends AbstractController
         $formGest->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('admin.index');

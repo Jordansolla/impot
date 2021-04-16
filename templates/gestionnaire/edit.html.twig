@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        {{ include('gestionnaire/_form.html.twig', {button: "Editer"} )}}
+        {{ include('gestionnaire/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

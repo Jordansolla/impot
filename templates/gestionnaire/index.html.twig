@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GestionnaireController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {{ include('gestionnaire/_form.html.twig') }}
+    </div>
+
+    <div class="container">
+        {% if users %}
+            <table class="table table-striped">
+                <thead>
+                    <th>Id</th>
+                    <th>Email</th>
+                    <th>Mot de passe</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Téléphone</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        {% if user.contribuable %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.password }}</td>
+                            <td>{{ user.nom }}</td>
+                            <td>{{ user.prenom }}</td>
+                            <td>
+                                {% if user.contribuable.phone %}
+                                    {{ user.contribuable.phone }}
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <a  href="{{ path('contribuable.edit', {'user': user.id,'contribuable': user.contribuable.id}) }}"><i class="fas fa-pen"></i></a>
+        {#                        {{ include('admin/_delete_form.html.twig') }}#}
+                            </td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+
+                </tbody>
+            </table>
+        {% else %}
+            <h2 class="text-center">Il n'y a pas de contribuable</h2>
+        {% endif %}
+    </div>
+{% endblock %}

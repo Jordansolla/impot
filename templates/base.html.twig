@@ -24,13 +24,35 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
-                    {% if is_granted('ROLE_USER') %}
+                    {% if is_granted('ROLE_USER','ROLE_GEST') %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_login') }}">Déconnexion</a>
+                            <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('admin.index') }}">Admin</a>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_GEST') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('gestionnaire') }}">Gestionnaire</a>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_CONTRI') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Mes informations
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ path('contribuable.child') }}">Mes enfants</a></li>
+                                <li><a class="dropdown-item" href="#">Mes simulations</a></li>
+                                <li><a class="dropdown-item" href="{{ path('contribuable.profile') }}">Mon profil</a></li>
+                            </ul>
                         </li>
                     {% endif %}
                 </ul>

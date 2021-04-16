@@ -49,6 +49,11 @@ class User implements UserInterface
      */
     private $gestionnaire;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Contribuable::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $contribuable;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -167,6 +172,23 @@ class User implements UserInterface
         }
 
         $this->gestionnaire = $gestionnaire;
+
+        return $this;
+    }
+
+    public function getContribuable(): ?Contribuable
+    {
+        return $this->contribuable;
+    }
+
+    public function setContribuable(Contribuable $contribuable): self
+    {
+        // set the owning side of the relation if necessary
+        if ($contribuable->getUser() !== $this) {
+            $contribuable->setUser($this);
+        }
+
+        $this->contribuable = $contribuable;
 
         return $this;
     }
