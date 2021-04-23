@@ -1,0 +1,14 @@
+{{ form_start(formBareme) }}
+        {{ form_widget(formBareme) }}
+
+    {% for data in form %}
+            {{ form_widget(data) }}
+    {% endfor %}
+<div><button class="btn btn-primary">{{ button|default('Enregistrer') }}</button></div>
+
+{{ form_end(formBareme) }}
+
+
+
+
+

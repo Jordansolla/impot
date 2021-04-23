@@ -20,7 +20,7 @@ class Bareme
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="integer")
      */
     private $anneeAt;
 
@@ -39,12 +39,12 @@ class Bareme
         return $this->id;
     }
 
-    public function getAnneeAt(): ?\DateTimeInterface
+    public function getAnneeAt(): ?int
     {
         return $this->anneeAt;
     }
 
-    public function setAnneeAt(\DateTimeInterface $anneeAt): self
+    public function setAnneeAt(int $anneeAt): self
     {
         $this->anneeAt = $anneeAt;
 

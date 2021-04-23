@@ -92,7 +92,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('//gestionnaire/{user}/{gestionnaire}/delete', name: 'gestionnaire.delete', methods: ['DELETE'])]
+    #[Route('/gestionnaire/{user}/{gestionnaire}/delete', name: 'gestionnaire.delete', methods: ['DELETE'])]
     public function delete(Request $request, User $user, Gestionnaire $gestionnaire)
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {

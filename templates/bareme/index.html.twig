@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BaremeController!{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Listes des barèmes</h1>
+<div class="container">
+
+        <table class="table table-striped text-center">
+            <thead>
+                <th>Année</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+            {% for bareme in baremes %}
+                <tr>
+                    <td>{{ bareme.anneeAt }}</td>
+                    <td>
+                        <a href="{{ path('bareme_tranche', {'bareme': bareme.id}) }}">
+                            <button class="btn btn-primary">Afficher</button></a>
+                        <a href="{{ path('bareme.edit',{'bareme': bareme.id}) }}"><button class="btn btn-warning">Editer</button></a>
+                            <button class="btn btn-danger">Supprimer</button></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    <a href="{{ path('bareme_create') }}"><button class="btn btn-primary">Crée un Barème</button></a>
+
+</div>
+
+{% endblock %}
