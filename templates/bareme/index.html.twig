@@ -19,7 +19,8 @@
                         <a href="{{ path('bareme_tranche', {'bareme': bareme.id}) }}">
                             <button class="btn btn-primary">Afficher</button></a>
                         <a href="{{ path('bareme.edit',{'bareme': bareme.id}) }}"><button class="btn btn-warning">Editer</button></a>
-                            <button class="btn btn-danger">Supprimer</button></td>
+                        <a href="{{ path('bareme.delete',{'bareme': bareme.id}) }}"> <button class="btn btn-danger">Supprimer</button></a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

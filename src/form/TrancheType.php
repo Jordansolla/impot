@@ -15,7 +15,6 @@ class TrancheType extends AbstractType
             ->add('min')
             ->add('max')
             ->add('percentage')
-//            ->add('bareme')
         ;
     }
 

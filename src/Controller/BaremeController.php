@@ -33,35 +33,16 @@ class BaremeController extends AbstractController
         $formBareme = $this->createForm(BaremeType::class, $bareme);
         $formBareme->handleRequest($request);
 
-        $form = [];
-        for ($i = 1; $i <= 5; $i++)
-        {
-            $tranche = new Tranche();
-            $tranche->setBareme($bareme);
-
-            $trancheNum[$i] = $this->createForm(TrancheType::class, $tranche) ;
-
-            $form[] = $trancheNum[$i]->createView();
-            $trancheNum[$i]->handleRequest($request);
-
-            if ($trancheNum[$i]->isSubmitted() && $trancheNum[$i]->isValid())
-            {
-                $this->getDoctrine()->getManager()->persist($tranche);
-            }
-
-        }
-
         if ($formBareme->isSubmitted() && $formBareme->isValid()) {
-
-            $this->getDoctrine()->getManager()->persist($bareme);
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($bareme);
+            $entityManager->flush();
 
             return $this->redirectToRoute('bareme');
         }
-
         return $this->render('bareme/new.html.twig', [
             'formBareme' => $formBareme->createView(),
-            'form' => $form
+
         ]);
 
     }
@@ -113,9 +94,27 @@ class BaremeController extends AbstractController
 
         return $this->render('bareme/edit.html.twig', [
             'formBareme' => $formBareme->createView(),
-            'form' => $form
+            'form' => $form,
+            'bareme' => $bareme
 
         ]);
     }
 
+    #[Route('/bareme/{bareme}/delete', name: 'bareme.delete')]
+    public function delete(Bareme $bareme, TrancheRepository $trancheRepo)
+    {
+
+        $tranches = $trancheRepo->findByBareme($bareme->getId());
+
+        $em = $this->getDoctrine()->getManager();
+        foreach ($tranches as $tranche)
+        {
+            $bareme->removeTranch($tranche);
+            $em->remove($tranche);
+        }
+        $em->remove($bareme);
+        $em->flush();
+
+        return $this->redirectToRoute('bareme');
+    }
 }

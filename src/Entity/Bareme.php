@@ -25,13 +25,19 @@ class Bareme
     private $anneeAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tranche::class, mappedBy="bareme")
+     * @ORM\OneToMany(targetEntity=Tranche::class, mappedBy="bareme",cascade={"persist"})
      */
     private $tranches;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Simulation::class, mappedBy="annee")
+     */
+    private $simulations;
 
     public function __construct()
     {
         $this->tranches = new ArrayCollection();
+        $this->simulations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,6 +81,36 @@ class Bareme
             // set the owning side to null (unless already changed)
             if ($tranch->getBareme() === $this) {
                 $tranch->setBareme(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Simulation[]
+     */
+    public function getSimulations(): Collection
+    {
+        return $this->simulations;
+    }
+
+    public function addSimulation(Simulation $simulation): self
+    {
+        if (!$this->simulations->contains($simulation)) {
+            $this->simulations[] = $simulation;
+            $simulation->setAnnee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSimulation(Simulation $simulation): self
+    {
+        if ($this->simulations->removeElement($simulation)) {
+            // set the owning side to null (unless already changed)
+            if ($simulation->getAnnee() === $this) {
+                $simulation->setAnnee(null);
             }
         }
 

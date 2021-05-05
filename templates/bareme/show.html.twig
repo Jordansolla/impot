@@ -41,7 +41,7 @@
         </table>
         <div class="text-center">
             <a href="{{ path('bareme.edit',{'bareme': bareme.id}) }}"><button class="btn btn-warning">Editer</button></a>
-            <button class="btn btn-danger">Supprimer</button>
+            <a href="{{ path('bareme.delete',{'bareme': bareme.id}) }}"> <button class="btn btn-danger">Supprimer</button></a>
         </div>
 
 

@@ -1,14 +1,24 @@
 {{ form_start(formBareme) }}
-        {{ form_widget(formBareme) }}
+    {{ form_row(formBareme.anneeAt) }}
 
-    {% for data in form %}
-            {{ form_widget(data) }}
-    {% endfor %}
-<div><button class="btn btn-primary">{{ button|default('Enregistrer') }}</button></div>
+<ul id="email-fields-list"
+    data-prototype="{{ form_widget(formBareme.tranches.vars.prototype)|e }}"
 
+    data-widget-tags="{{ '<li></li>'|e }}"
+    data-widget-counter="{{ formBareme.tranches|length }}">
+        {% for trancheField in formBareme.tranches %}
+                <li>
+                        {{ form_errors(trancheField) }}
+                        {{ form_row(trancheField) }}
+                </li>
+        {% endfor %}
+</ul>
+
+<button type="button"
+        class="add-another-collection-widget"
+        data-list-selector="#email-fields-list">Ajouter une tranche</button>
+
+<div class="col-md-1"><button class="btn btn-primary">{{ button|default('Enregistrer') }}</button></div>
 {{ form_end(formBareme) }}
-
-
-
 
 

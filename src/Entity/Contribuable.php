@@ -35,9 +35,15 @@ class Contribuable
      */
     private $children;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Simulation::class, mappedBy="contribuable")
+     */
+    private $simulations;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->simulations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,6 +99,36 @@ class Contribuable
             // set the owning side to null (unless already changed)
             if ($child->getContribuable() === $this) {
                 $child->setContribuable(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Simulation[]
+     */
+    public function getSimulations(): Collection
+    {
+        return $this->simulations;
+    }
+
+    public function addSimulation(Simulation $simulation): self
+    {
+        if (!$this->simulations->contains($simulation)) {
+            $this->simulations[] = $simulation;
+            $simulation->setContribuable($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSimulation(Simulation $simulation): self
+    {
+        if ($this->simulations->removeElement($simulation)) {
+            // set the owning side to null (unless already changed)
+            if ($simulation->getContribuable() === $this) {
+                $simulation->setContribuable(null);
             }
         }
 
